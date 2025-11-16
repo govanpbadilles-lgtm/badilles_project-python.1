@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="w3-row-padding w3-padding-large">
+    <!-- Left: form -->
+    <div class="w3-third">
+        <div class="w3-card-modern w3-padding">
+            <h3 class="w3-text-dark-grey w3-border-bottom w3-border-light-grey w3-padding-small">STUDENT INFORMATION</h3>
+            <form id="studentForm" action="{{ url_for('add_student') }}" method="post" enctype="multipart/form-data">
+                <div class="profile-img-container">
+                    <div class="profile-circle">
+                        <img id="previewImage"
+                             src="{{ url_for('static', filename='images/account.jpg') }}"
+                             alt="Student Profile"
+                             style="width:100%; height:100%; border-radius:50%; object-fit: cover;">
+                    </div>
+                </div>
+                <p class="w3-center">
+                    <input type="file" name="profile" id="profile" accept="image/*" onchange="previewProfile(event)">
+                </p>
+                <p><label class="w3-text-grey w3-small">IDNO</label><input type="text" name="idno" id="idno" class="w3-input w3-border"></p>
+                <p><label class="w3-text-grey w3-small">LASTNAME</label><input type="text" name="lastname" id="lastname" class="w3-input w3-border"></p>
+                <p><label class="w3-text-grey w3-small">FIRSTNAME</label><input type="text" name="firstname" id="firstname" class="w3-input w3-border"></p>
+                <p><label class="w3-text-grey w3-small">COURSE</label>
+                    <select name="course" id="course" class="w3-select w3-border">
+                        <option value="" disabled selected>Select Course</option>
+                        <option value="BSIT">BS INFORMATION TECHNOLOGY</option>
+                        <option value="BSCS">BS COMPUTER SCIENCE</option>
+                        <option value="BSCPE">BS COMPUTER ENGINEERING</option>
+                        <option value="BSCRIM">BS CRIMINOLOGY</option>
+                        <option value="BSHM">BS HOSPITALITY MANAGEMENT</option>
+                        <option value="BSN">BS NURSING</option>
+                    </select>
+                </p>
+                <p><label class="w3-text-grey w3-small">LEVEL</label>
+                    <select name="level" id="level" class="w3-select w3-border">
+                        <option value="" disabled selected>Select Level</option>
+                        <option value="1">FIRST YEAR</option>
+                        <option value="2">SECOND YEAR</option>
+                        <option value="3">THIRD YEAR</option>
+                        <option value="4">FOURTH YEAR</option>
+                    </select>
+                </p>
+                <p id="errorMessage" class="w3-text-red w3-small" style="display:none; text-align:center;"></p>
+                <p class="w3-margin-top w3-center">
+                    <button id="saveBtn" type="submit" class="w3-button w3-button-save">SAVE</button>
+                    <button type="reset" class="w3-button w3-button-cancel">CANCEL</button>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Right: search + table -->
+    <div class="w3-twothird">
+        <div class="w3-row w3-margin-bottom w3-padding-small">
+            <div class="w3-col l10 m9 s8">
+                <input type="text" id="studentSearch" class="w3-input w3-search-bar" placeholder="Search students by ID, Name, or Course...">
+            </div>
+            <div class="w3-col l2 m3 s4 w3-padding-left">
+                <button id="studentSearchBtn" type="button" class="w3-button w3-button-save w3-round-large w3-block">
+                    <i class="fa fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+
+        <div class="w3-card-modern">
+            <h3 class="w3-container w3-padding w3-text-dark-grey"><center>STUDENT LIST</center></h3>
+            <table class="w3-table-all">
+                <tr class="w3-table-header-custom">
+                    <th>PHOTO</th>
+                    <th class="hide-mobile">IDNO</th>
+                    <th class="hide-mobile">LASTNAME</th>
+                    <th class="hide-mobile">FIRSTNAME</th>
+                    <th class="hide-mobile">COURSE</th>
+                    <th class="hide-mobile">LEVEL</th>
+                    <th class="show-mobile">NAME</th>
+                    <th class="show-mobile">COURSE & LEVEL</th>
+                    <th>ACTION</th>
+                </tr>
+
+                {% for student in studentlist %}
+                <tr class="student-row">
+                    <td><img src="{{ student['image'] | default(url_for('static', filename='images/account.jpg')) }}" alt="Profile" class="tbl-profile"></td>
+                    <td class="hide-mobile">{{ student['idno'] | default('') }}</td>
+                    <td class="hide-mobile">{{ student['lastname'] | default('') | upper }}</td>
+                    <td class="hide-mobile">{{ student['firstname'] | default('') | upper }}</td>
+                    <td class="hide-mobile">{{ student['course'] | default('') | upper }}</td>
+                    <td class="hide-mobile">{{ student['level'] | default('') | upper }}</td>
+                    <td class="show-mobile">{{ student['lastname'] | default('') | upper }}, {{ student['firstname'] | default('') | upper }}</td>
+                    <td class="show-mobile">{{ student['course'] | default('') | upper }} - {{ student['level'] | default('') | upper }}</td>
+                    <td>
+                        <button class="action-icon edit-icon" title="Edit">&#9998;</button>
+                        <button class="action-icon delete-icon" title="Delete">&#x1F5D1;</button>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                <tr id="noStudentMessage" style="display:none;">
+                    <td colspan="9" class="w3-center w3-text-red">Student not found</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% endblock %}

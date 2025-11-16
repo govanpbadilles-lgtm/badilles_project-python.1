@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/w3.css') }}">
+		<title>Student Management</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		
+	</head>
+
+	<body>
+		<div class="w3-bar w3-container w3-black" style="position:sticky;top:0">
+			<h4>Student Management</h4>
+		</div>
+		<div class="w3-container w3-padding">
+			{% block content %}
+			{% endblock %}
+		</div>
+		<center class="w3-small w3-margin-top">
+			&copy; GOVAN P. BADILLES, 2025
+		</center>
+	</body>
+</html>
