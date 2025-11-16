@@ -1,6 +1,8 @@
 import os
 import sqlite3
 from sqlite3 import Row
+from db.dbhelper import *
+
 
 # --- Path to your SQLite database file ---
 database = os.path.join("db", "school.db")
@@ -112,3 +114,4 @@ def updaterecord(table: str, idno: int, **kwargs) -> bool:
     vals.append(idno)
     print(f"[DB DEBUG] {sql} -> {vals}")
     return postprocess(sql, vals)
+
